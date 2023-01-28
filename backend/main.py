@@ -1,8 +1,6 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from util import dbconection
+from util.dbconection import db
 from util import config
-from util import dbconection
 
 
 config = config.Config()
@@ -10,10 +8,9 @@ config.verify()
 
 app = Flask(__name__)
 app.config[config.DB_URI_TYPE] = config.DB_URL
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
 app.app_context().push()
 
-db = dbconection.db
 db.init_app(app)
 
 
@@ -22,7 +19,7 @@ def addBluePrints():
     app.register_blueprint(orders_pages)
 
 
-def createDb():
+def createTables():
     from models.orders import Orders
     from models.products import Products
     with app.app_context():
@@ -30,6 +27,6 @@ def createDb():
 
 
 if __name__ == "__main__":
-    createDb()
+    createTables()
     addBluePrints()
     app.run(host="0.0.0.0", port=config.PORT, debug=config.DEBUG_MODE)

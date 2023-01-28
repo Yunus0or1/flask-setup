@@ -1,7 +1,4 @@
-from util import dbconection
-
-db = dbconection.db
-
+from util.dbconection import db
 
 class Orders(db.Model):
     __tablename__ = "orders"
@@ -11,4 +8,4 @@ class Orders(db.Model):
     product_id = db.Column(db.String(100), db.ForeignKey('products.id'),)
 
     def __repr__(self):
-        return f'<orders {self.id}>'
+        return f'<Order => {self.id}>'

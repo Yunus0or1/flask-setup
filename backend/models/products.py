@@ -1,6 +1,4 @@
-from util import dbconection
-
-db = dbconection.db
+from util.dbconection import db
 
 
 class Products(db.Model):
@@ -13,4 +11,4 @@ class Products(db.Model):
         "orders", backref="products", cascade="all, delete")
 
     def __repr__(self):
-        return f'<product {self.id}>'
+        return f'<Product => {self.id}>'
