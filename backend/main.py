@@ -24,6 +24,7 @@ def addBluePrints():
 
 def createDb():
     from models.orders import Orders
+    from models.products import Products
     with app.app_context():
         db.create_all()
 
