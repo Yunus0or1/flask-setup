@@ -8,7 +8,7 @@ class Products(db.Model):
     name = db.Column(db.String(100), nullable=False)
     list_price = db.Column(db.String(100), nullable=False)
     orders = db.relationship(
-        "orders", backref="products", cascade="all, delete")
+        "Orders", backref="products", cascade="all, delete")
 
     def __repr__(self):
         return f'<Product => {self.id}>'

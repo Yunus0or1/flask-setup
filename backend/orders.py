@@ -1,4 +1,5 @@
 from flask import Blueprint
+from middlewares.user_required import user_required
 from models.orders import Orders
 
 orders_pages = Blueprint('orders', __name__, url_prefix='/orders')
@@ -6,6 +7,7 @@ orders_pages = Blueprint('orders', __name__, url_prefix='/orders')
 
 
 @orders_pages.route('/', methods=['GET'])
+@user_required
 def list_orders():
     print(Orders.query.all())
     return '<h3>Test</h3>'
