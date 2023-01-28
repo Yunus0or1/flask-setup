@@ -1,8 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from util import dbconection
-from sqlalchemy.sql import text
-import os
 from util import config
 from util import dbconection
 
@@ -23,7 +21,7 @@ def addBluePrints():
     app.register_blueprint(orders_pages)
 
 def createDb():
-    from orders import orders
+    from models.orders import Orders
     with app.app_context():
         db.create_all()
 
