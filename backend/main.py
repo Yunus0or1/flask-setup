@@ -1,9 +1,9 @@
 from flask import Flask
 from util.dbconection import db
-from util import config
+from util.config import Config
 
 
-config = config.Config()
+config = Config()
 config.verify()
 
 app = Flask(__name__)
