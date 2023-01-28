@@ -5,6 +5,7 @@ orders_pages = Blueprint('orders', __name__, url_prefix='/orders')
 
 @orders_pages.route('/', methods=['GET'])
 def list_orders():
+    return '<h3>Test</h3>'
     pass
 
 
