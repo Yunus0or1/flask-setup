@@ -1,10 +1,13 @@
 from flask import Blueprint
+from models import orders
 
 orders_pages = Blueprint('orders', __name__, url_prefix='/orders')
 
 
+
 @orders_pages.route('/', methods=['GET'])
 def list_orders():
+    print(orders.query.all())
     return '<h3>Test</h3>'
     pass
 

@@ -1,28 +1,34 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 from util import dbconection
-from orders import orders_pages
+from sqlalchemy.sql import text
 import os
-from dotenv import load_dotenv, find_dotenv
+from util import config
+from util import dbconection
 
-load_dotenv(find_dotenv())
 
-DB_NAME = os.environ.get("DB_NAME")
-PORT = os.environ.get("FLASK_RUN_PORT")
-DEBUG_MODE = os.environ.get("DEBUG_MODE")
-
-# Checking all the ENV variables exist or not
-if DB_NAME == None or PORT == None or DEBUG_MODE == None :
-    raise SystemExit("=> ERROR IN Loading Environment File in main.py. Please check if .env file exists with these keys : DB_NAME, PORT. Also check if the database is running. Please fix the .env file and start the server again")
-else:
-    print('=> Loaded ENV Variables')
-
-dbconn = dbconection.connectToDB()
-
-print(dbconn)
-
+config = config.Config()
+config.verify()
 
 app = Flask(__name__)
-app.register_blueprint(orders_pages)
+app.config[config.DB_URI_TYPE] = config.DB_URL
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.app_context().push()
+
+db = dbconection.db
+db.init_app(app)
+
+def addBluePrints():
+    from orders import orders_pages
+    app.register_blueprint(orders_pages)
+
+def createDb():
+    from orders import orders
+    with app.app_context():
+        db.create_all()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=PORT, debug=DEBUG_MODE)
+    createDb()
+    addBluePrints()
+
+    app.run(host="0.0.0.0", port=config.PORT, debug=config.DEBUG_MODE)
