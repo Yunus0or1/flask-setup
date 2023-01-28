@@ -16,17 +16,19 @@ app.app_context().push()
 db = dbconection.db
 db.init_app(app)
 
+
 def addBluePrints():
     from orders import orders_pages
     app.register_blueprint(orders_pages)
+
 
 def createDb():
     from models.orders import Orders
     with app.app_context():
         db.create_all()
 
+
 if __name__ == "__main__":
     createDb()
     addBluePrints()
-
     app.run(host="0.0.0.0", port=config.PORT, debug=config.DEBUG_MODE)
