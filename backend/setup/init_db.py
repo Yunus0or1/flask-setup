@@ -28,5 +28,11 @@ cur.execute("INSERT INTO products (name, list_price) VALUES (?, ?)", ('Dinghy', 
 cur.execute("INSERT INTO products (name, list_price) VALUES (?, ?)", ('Narrowboat', 500))
 cur.execute("INSERT INTO products (name, list_price) VALUES (?, ?)", ('Submarine', 2000))
 
+# orders data
+cur.execute("INSERT INTO orders (actual_price, product_id) VALUES (?, ?)", (1000, 1))
+cur.execute("INSERT INTO orders (actual_price, product_id) VALUES (?, ?)", (900, 1))
+cur.execute("INSERT INTO orders (actual_price, product_id) VALUES (?, ?)", (950, 1))
+cur.execute("INSERT INTO orders (actual_price, product_id) VALUES (?, ?)", (150, 2))
+
 connection.commit()
 connection.close()
