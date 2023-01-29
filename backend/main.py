@@ -2,11 +2,15 @@ from flask import Flask
 from util.dbconection import db
 from util.config import Config
 from orders import orders_pages
+from flask_cors import CORS
 
 config = Config()
 config.verify()
 
 app = Flask(__name__)
+CORS(app)
+
+
 app.config[config.DB_URI_TYPE] = config.DB_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
 app.app_context().push()

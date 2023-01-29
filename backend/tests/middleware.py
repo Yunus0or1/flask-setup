@@ -1,5 +1,4 @@
 import unittest
-import json
 from main import app
 from util.dbconection import db
 

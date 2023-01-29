@@ -8,3 +8,4 @@ Werkzeug==2.2.1
 zipp==3.8.1
 flask-sqlalchemy
 python-dotenv
+flask_cors

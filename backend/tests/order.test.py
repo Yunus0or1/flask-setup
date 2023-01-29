@@ -1,7 +1,23 @@
-from orders import orders_pages # Flask instance of the API
+import unittest
+from main import app
+from util.dbconection import db
 
-def test_index_route():
-    response = 200
 
-    assert response.status_code == 200
-    assert response.data.decode('utf-8') == 'Testing, Flask!'
+class OrdersTest(unittest.TestCase):
+
+    def setUp(self):
+        self.app = app.test_client(self)
+        self.headers = {"Content-Type": "application/json",
+                        "Authorization": "Bearer mock_token_aJJSVxxx"}
+
+    def test_auth_middleware(self):
+        response = self.app.get('/orders/', headers=self.headers)
+        self.assertEqual(200, response.status_code)
+
+    def tearDown(self):
+        pass
+
+
+if __name__ == '__main__':
+    unittest.main()
+    app.run()
