@@ -52,7 +52,11 @@ def update(order_id):
         request_data = request.get_json()
         actual_price = request_data['actual_price']
 
-        order = Orders.query.filter(Orders.id == order_id).first()
+        order = Orders.query.get(order_id)
+
+        if order is None:
+            return sendCustomErrorResponse(title="Order is not found")
+
         order.actual_price = actual_price
         db.session.commit()
 
@@ -69,6 +73,10 @@ def post():
         request_data = request.get_json()
         product_id = request_data['product_id']
         actual_price = request_data['actual_price']
+
+        product = Products.query.get(product_id)
+        if product is None:
+            return sendCustomErrorResponse(title="Product is not found")
 
         order = Orders(actual_price=actual_price, product_id=product_id)
         db.session.add(order)
@@ -88,3 +96,7 @@ def metrics():
 
 def sendErrorResponse():
     return make_response(jsonify({"message": "Something went wrong."}), 500)
+
+
+def sendCustomErrorResponse(title):
+    return make_response(jsonify({"message": title}), 200)
