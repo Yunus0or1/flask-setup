@@ -1,7 +1,10 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from middlewares.jwt_token_middleware import jwt_token_middleware
 from models.orders import Orders
 from models.products import Products
+from flask import request, jsonify, make_response
+from util.helpers import model_list_to_dict_helper
+
 
 orders_pages = Blueprint('orders', __name__, url_prefix='/orders')
 
@@ -9,20 +12,37 @@ orders_pages = Blueprint('orders', __name__, url_prefix='/orders')
 @orders_pages.route('/', methods=['GET'])
 @jwt_token_middleware
 def list_orders():
-    print(Products.query.all())
-    return '<h3>Test</h3>'
-    pass
+    try:
+        orders = Orders.query.all()
+        result = model_list_to_dict_helper(orders)
+        return make_response(jsonify({"orders": result}), 200)
+    except Exception as e:
+        print(e)
+        return sendErrorResponse()
 
 
 @orders_pages.route('/<order_id>', methods=['GET'])
 @jwt_token_middleware
 def get(order_id):
-    pass
+    try:
+        order = Orders.query.get(order_id)
+        print(order)
+        if order:
+            return make_response(jsonify({"order": order.as_dict()}), 200)
+        return make_response(jsonify({"order": None}), 200)
+    except Exception as e:
+        print(e)
+        return sendErrorResponse()
 
 
 @orders_pages.route('/<order_id>', methods=['DELETE'])
 def delete(order_id):
-    pass
+    try:
+        Orders.query.filter(Orders.id == order_id).delete()
+        return make_response(jsonify({"message": "success"}), 200)
+    except Exception as e:
+        print(e)
+        return sendErrorResponse()
 
 
 @orders_pages.route('/<order_id>', methods=['PUT'])
@@ -41,3 +61,7 @@ def post():
 @jwt_token_middleware
 def metrics():
     pass
+
+
+def sendErrorResponse():
+    return make_response(jsonify({"message": "Something went wrong."}), 500)
