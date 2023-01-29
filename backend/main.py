@@ -1,7 +1,7 @@
 from flask import Flask
 from util.dbconection import db
 from util.config import Config
-
+from orders import orders_pages
 
 config = Config()
 config.verify()
@@ -13,10 +13,7 @@ app.app_context().push()
 
 db.init_app(app)
 
-
-def addBluePrints():
-    from orders import orders_pages
-    app.register_blueprint(orders_pages)
+app.register_blueprint(orders_pages)
 
 
 def createTables():
@@ -28,5 +25,4 @@ def createTables():
 
 if __name__ == "__main__":
     createTables()
-    addBluePrints()
     app.run(host="0.0.0.0", port=config.PORT, debug=config.DEBUG_MODE)
