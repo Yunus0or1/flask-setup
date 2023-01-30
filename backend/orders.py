@@ -13,9 +13,16 @@ orders_pages = Blueprint('orders', __name__, url_prefix='/orders')
 @jwt_token_middleware
 def list_orders():
     try:
-        orders = Orders.query.all()
+        # Query String
+        product_id = request.args.get('product_id')
+
+        if product_id is None:
+            orders = Orders.query.all()
+        else:
+            orders = Orders.query.filter(Orders.product_id == product_id)
+
         result = model_list_to_dict_helper(orders)
-        return make_response(jsonify({"orders": result}), 200)
+        return make_response(jsonify({"orders": result, "product_id": product_id}), 200)
     except Exception as e:
         print(e)
         return sendErrorResponse()

@@ -15,6 +15,13 @@ class OrdersTest(unittest.TestCase):
 
     def test_list_orders(self):
         response = self.app.get('/orders/', headers=self.headers)
+        print(response.get_json())
+        self.assertEqual(200, response.status_code)
+
+    def test_list_orders_by_product(self):
+        response = self.app.get('/orders/?product_id=1', headers=self.headers)
+        print(response.get_json())
+        self.assertEqual(response.get_json()["product_id"], "1")
         self.assertEqual(200, response.status_code)
 
     def test_order_get(self):
