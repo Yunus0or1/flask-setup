@@ -36,3 +36,5 @@ cur.execute("INSERT INTO orders (actual_price, product_id) VALUES (?, ?)", (150,
 
 connection.commit()
 connection.close()
+
+

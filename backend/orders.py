@@ -5,6 +5,7 @@ from models.products import Products
 from flask import request, jsonify, make_response
 from util.helpers import model_list_to_dict_helper
 from util.dbconection import db
+from sqlalchemy import text
 
 orders_pages = Blueprint('orders', __name__, url_prefix='/orders')
 
@@ -13,7 +14,7 @@ orders_pages = Blueprint('orders', __name__, url_prefix='/orders')
 @jwt_token_middleware
 def list_orders():
     try:
-        # Query String
+        # Query String Fetch
         product_id = request.args.get('product_id')
 
         if product_id is None:
@@ -24,6 +25,7 @@ def list_orders():
         result = model_list_to_dict_helper(orders)
         return make_response(jsonify({"orders": result, "product_id": product_id}), 200)
     except Exception as e:
+        print('Error in list_orders function')
         print(e)
         return sendErrorResponse()
 
@@ -37,6 +39,7 @@ def get(order_id):
             return make_response(jsonify({"order": order.as_dict()}), 200)
         return make_response(jsonify({"order": None}), 200)
     except Exception as e:
+        print('Error in get function')
         print(e)
         return sendErrorResponse()
 
@@ -46,8 +49,9 @@ def delete(order_id):
     try:
         Orders.query.filter(Orders.id == order_id).delete()
         db.session.commit()
-        return make_response(jsonify({"message": "success"}), 200)
+        return sendSuccessResponse()
     except Exception as e:
+        print('Error in delete function')
         print(e)
         return sendErrorResponse()
 
@@ -67,8 +71,9 @@ def update(order_id):
         order.actual_price = actual_price
         db.session.commit()
 
-        return make_response(jsonify({"message": "success"}), 200)
+        return sendSuccessResponse()
     except Exception as e:
+        print('Error in update function')
         print(e)
         return sendErrorResponse()
 
@@ -89,8 +94,9 @@ def post():
         db.session.add(order)
         db.session.commit()
 
-        return make_response(jsonify({"message": "success"}), 200)
+        return sendSuccessResponse()
     except Exception as e:
+        print('Error in post function')
         print(e)
         return sendErrorResponse()
 
@@ -98,7 +104,33 @@ def post():
 @orders_pages.route('/metrics', methods=['GET'])
 @jwt_token_middleware
 def metrics():
-    pass
+    try:
+        query = text("select id, name, list_price, total_actual_price, total_product_count, (1 - (total_actual_price / (1.00 * list_price * total_product_count))) * 100 from "
+                     "(select id, name, list_price, total_actual_price, total_product_count from products left join "
+                     "(select product_id, SUM(actual_price) AS total_actual_price, Count(product_id) AS total_product_count "
+                     "from orders group by product_id) as sum_table ON sum_table.product_id = products.id ) as result")
+        result = db.session.execute(query)
+
+        products = []
+        for row in result:
+            resultDict = {}
+            resultDict["id"] = row[0]
+            resultDict["name"] = row[1]
+            resultDict["list_price"] = row[2]
+            resultDict["percentage"] = row[5] if row[5] is None else round(
+                row[5], 2)
+
+            products.append(resultDict)
+
+        return make_response(jsonify({"products": products, "message": "success"}), 200)
+    except Exception as e:
+        print('Error in metrics function')
+        print(e)
+        return sendErrorResponse()
+
+
+def sendSuccessResponse():
+    return make_response(jsonify({"message": "success"}), 200)
 
 
 def sendErrorResponse():

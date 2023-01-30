@@ -3,6 +3,7 @@ import unittest
 from main import app
 from util.dbconection import db
 from models.products import Products
+import os 
 
 
 class OrdersTest(unittest.TestCase):
@@ -13,14 +14,15 @@ class OrdersTest(unittest.TestCase):
         self.headers = {"Content-Type": "application/json",
                         "Authorization": "Bearer mock_token_aJJSVxxx"}
 
+        os.system('python setup/init_db.py')
+        
+
     def test_list_orders(self):
         response = self.app.get('/orders/', headers=self.headers)
-        print(response.get_json())
         self.assertEqual(200, response.status_code)
 
     def test_list_orders_by_product(self):
         response = self.app.get('/orders/?product_id=1', headers=self.headers)
-        print(response.get_json())
         self.assertEqual(response.get_json()["product_id"], "1")
         self.assertEqual(200, response.status_code)
 
@@ -63,6 +65,11 @@ class OrdersTest(unittest.TestCase):
         })
         response = self.app.post(
             '/orders/', headers=self.headers,  data=payload)
+        self.assertEqual(response.get_json()["message"], "success",)
+        self.assertEqual(200, response.status_code)
+
+    def test_order_metrics(self):
+        response = self.app.get('/orders/metrics', headers=self.headers)
         self.assertEqual(response.get_json()["message"], "success",)
         self.assertEqual(200, response.status_code)
 
