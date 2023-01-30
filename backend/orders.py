@@ -107,7 +107,7 @@ def metrics():
     try:
         query = text("select id, name, list_price, total_actual_price, total_product_count, (1 - (total_actual_price / (1.00 * list_price * total_product_count))) * 100 from "
                      "(select id, name, list_price, total_actual_price, total_product_count from products left join "
-                     "(select product_id, SUM(actual_price) AS total_actual_price, Count(product_id) AS total_product_count "
+                     "(select product_id, sum(actual_price) as total_actual_price, count(product_id) as total_product_count "
                      "from orders group by product_id) as sum_table ON sum_table.product_id = products.id ) as result")
         result = db.session.execute(query)
 
