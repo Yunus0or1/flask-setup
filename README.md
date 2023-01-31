@@ -11,4 +11,6 @@ https://stackoverflow.com/questions/51119495/how-to-setup-environment-variables-
 
 5. To test the functions => python -m unittest tests/orders.py
 
+6. You can run the server and use postman collection to test the APIs.
+
 
