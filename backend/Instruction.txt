@@ -1,2 +1,0 @@
-1. Set the ENV for flask
-https://stackoverflow.com/questions/51119495/how-to-setup-environment-variables-for-flask-run-on-windows
