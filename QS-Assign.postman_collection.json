@@ -44,6 +44,49 @@
 			"response": []
 		},
 		{
+			"name": "/orders_filter",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer mock_token_aJJSVxxx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/orders/?product_id=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"orders",
+						""
+					],
+					"query": [
+						{
+							"key": "product_id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Database"
+			},
+			"response": []
+		},
+		{
 			"name": "/orders/id",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
