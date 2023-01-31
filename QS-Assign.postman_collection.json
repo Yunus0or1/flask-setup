@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "32a5e8ba-2d93-4966-92fc-e0bf2972ae03",
+		"name": "QS-Assign",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11940923"
+	},
+	"item": [
+		{
+			"name": "/orders",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer mock_token_aJJSVxxx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/orders/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"orders",
+						""
+					]
+				},
+				"description": "Database"
+			},
+			"response": []
+		},
+		{
+			"name": "/orders/id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer mock_token_aJJSVxxx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/orders/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"orders",
+						"1"
+					]
+				},
+				"description": "Database"
+			},
+			"response": []
+		},
+		{
+			"name": "/orders/metrics",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer mock_token_aJJSVxxx",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/orders/metrics",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"orders",
+						"metrics"
+					]
+				},
+				"description": "Database"
+			},
+			"response": []
+		}
+	]
+}
