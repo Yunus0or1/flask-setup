@@ -3,7 +3,9 @@ import unittest
 from main import app
 from util.dbconection import db
 from models.products import Products
-import os 
+from models.orders import Orders
+from random import randrange
+import os
 
 
 class OrdersTest(unittest.TestCase):
@@ -15,7 +17,6 @@ class OrdersTest(unittest.TestCase):
                         "Authorization": "Bearer mock_token_aJJSVxxx"}
 
         os.system('python setup/init_db.py')
-        
 
     def test_list_orders(self):
         response = self.app.get('/orders/', headers=self.headers)
@@ -36,14 +37,21 @@ class OrdersTest(unittest.TestCase):
         self.assertEqual(response.get_json()["message"], "success")
         self.assertEqual(200, response.status_code)
 
+        orders = Orders.query.all()
+        self.assertEqual(len(orders), 3)
+
     def test_order_update(self):
+        random_price = randrange(10)
         payload = json.dumps({
-            "actual_price": 200,
+            "actual_price": random_price,
         })
         response = self.app.put(
             '/orders/2', headers=self.headers,  data=payload)
         self.assertEqual(response.get_json()["message"], "success",)
         self.assertEqual(200, response.status_code)
+
+        orders = Orders.query.get(2)
+        self.assertEqual(orders.actual_price, random_price)
 
     def test_order_post_1(self):
         payload = json.dumps({
@@ -67,6 +75,11 @@ class OrdersTest(unittest.TestCase):
             '/orders/', headers=self.headers,  data=payload)
         self.assertEqual(response.get_json()["message"], "success",)
         self.assertEqual(200, response.status_code)
+
+        orders = Orders.query.all()
+        self.assertEqual(len(orders), 5)
+        # Last order check
+        self.assertEqual(orders[4].id, 5)
 
     def test_order_metrics(self):
         response = self.app.get('/orders/metrics', headers=self.headers)
