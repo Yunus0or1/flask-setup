@@ -13,4 +13,6 @@ https://stackoverflow.com/questions/51119495/how-to-setup-environment-variables-
 
 6. You can run the server and use postman collection to test the APIs.
 
+7. I did not use venv, rather installed in global scope. You can use venv to run the server.
+
 
